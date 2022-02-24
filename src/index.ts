@@ -31,15 +31,20 @@ firebaseUtils.init()
 
 // On Message sent
 client.on('messageCreate', async (message) => {
-  if (message.guild === null) {
-    verifier(message, [], client)
-    return
-  }
-
   // Parse the command
   const parsed = parseCmd(message, prefix, { allowSpaceBeforeCommand: true })
 
   if (!parsed.success) return
+
+  if (parsed.command.toLowerCase() == "verify") {
+    commands["verify"](message, parsed.arguments)
+    return
+  }
+
+  if (message.guild === null) {
+    verifier(message, [], client)
+    return
+  }
 
   // @ts-expect-error
   const targetFunction = commands[parsed.command.toLowerCase()]
