@@ -1,8 +1,8 @@
-import chalk from 'chalk'
+import chalk from 'chalk';
 
 /**
  * log Class
- * Class for logging messages to the console
+ * @summary Class for logging messages to the console
  */
 export default class log {
 /**
@@ -11,8 +11,8 @@ export default class log {
  * @param {string} from Author of the log
  * @param {string} text Message Content
  */
-  public static logError (from: string, text: string): void {
-    console.log(chalk.red(`❌ [${from}] ${text}`))
+  public static logError(from: string, text: string): void {
+    console.log(chalk.red(`❌ [${from}] ${text}`));
   }
 
   /**
@@ -21,8 +21,8 @@ export default class log {
    * @param {string} from Author of the log
    * @param {string} text Message Content
    */
-  public static logSuccess (from: string, text: string): void {
-    console.log(chalk.green(`✅ [${from}] ${text}`))
+  public static logSuccess(from: string, text: string): void {
+    console.log(chalk.green(`✅ [${from}] ${text}`));
   }
 
   /**
@@ -31,8 +31,8 @@ export default class log {
    * @param {string} from Author of the log
    * @param {string} text Message Content
    */
-  public static logWarning (from: string, text: string): void {
-    console.log(chalk.yellow(` • [${from}] ${text}`))
+  public static logWarning(from: string, text: string): void {
+    console.log(chalk.yellow(` • [${from}] ${text}`));
   }
 
   /**
@@ -41,7 +41,7 @@ export default class log {
    * @param {string} from Author of the log
    * @param {string} text Message Content
    */
-  public static logNormal (from: string, text: string): void {
-    console.log(chalk.blue(` • [${from}] ${text}`))
+  public static logNormal(from: string, text: string): void {
+    console.log(chalk.blue(` • [${from}] ${text}`));
   }
 }

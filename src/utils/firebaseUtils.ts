@@ -1,10 +1,14 @@
-import { initializeApp, cert } from 'firebase-admin/app'
-import { getFirestore, Firestore } from 'firebase-admin/firestore'
-import log from './logUtils.js'
-import fs from 'fs/promises'
+import {initializeApp, cert} from 'firebase-admin/app';
+import {getFirestore, Firestore} from 'firebase-admin/firestore';
+import log from './logUtils.js';
+import fs from 'fs/promises';
 
-let fireStore: Firestore = new Firestore()
+let fireStore: Firestore = new Firestore();
 
+/**
+ * firebaseUtils
+ * @summary For connecting and interact with Firebase APIs
+ */
 export default class firebaseUtils {
   /**
      * Init Function
@@ -16,13 +20,13 @@ export default class firebaseUtils {
      *
      * init()
      */
-  public static async init (): Promise<void> {
-    const data: string = await fs.readFile('serviceAccountKey.json', 'utf-8')
+  public static async init(): Promise<void> {
+    const data: string = await fs.readFile('serviceAccountKey.json', 'utf-8');
     initializeApp({
-      credential: cert(JSON.parse(data))
-    })
-    log.logSuccess('Firebase', 'Successfully Connected to firebase!')
-    fireStore = getFirestore()
+      credential: cert(JSON.parse(data)),
+    });
+    log.logSuccess('Firebase', 'Successfully Connected to firebase!');
+    fireStore = getFirestore();
   }
 
   /**
@@ -31,31 +35,31 @@ export default class firebaseUtils {
    * @summary Check if the Discord User has linked with Polytoria Community Verify
    *
    * @param { string } discordUserID Targetted user ID
-   * @returns { Promise<Boolean> } Is user verified
+   * @return { Promise<Boolean> } Is user verified
    */
-   public static async isVerified (discordUserID: string): Promise<boolean> {
-    const usersRef = fireStore.collection('Users').doc(discordUserID)
-    const doc = await usersRef.get()
+  public static async isVerified(discordUserID: string): Promise<boolean> {
+    const usersRef = fireStore.collection('Users').doc(discordUserID);
+    const doc = await usersRef.get();
     if (!doc.exists) {
-      return false
+      return false;
     } else {
-      return true
+      return true;
     }
   }
 
-    /**
+  /**
    * getPolyUser Function
    *
    * @summary Get the Discord User has linked with Polytoria Community Verify
    *
    * @param { string } discordUserID Targetted user ID
-   * @returns { Promise<Boolean> } Is user verified
+   * @return { Promise<Boolean> } Is user verified
    */
-     public static async getPolyUser (discordUserID: string): Promise<any> {
-      const usersRef = fireStore.collection('Users').doc(discordUserID)
-      const doc = await usersRef.get()
-      return doc.data()
-    }
+  public static async getPolyUser(discordUserID: string): Promise<any> {
+    const usersRef = fireStore.collection('Users').doc(discordUserID);
+    const doc = await usersRef.get();
+    return doc.data();
+  }
 
   /**
    * setVerified Function
@@ -65,12 +69,12 @@ export default class firebaseUtils {
    * @param { string } discordUserID Targetted user ID
    * @param { string } polyUserID Targetted polytoria user ID
    */
-  public static async setVerified (discordUserID: string, polyUserID: string): Promise<void> {
-    const usersRef = fireStore.collection('Users').doc(discordUserID)
+  public static async setVerified(discordUserID: string, polyUserID: string): Promise<void> {
+    const usersRef = fireStore.collection('Users').doc(discordUserID);
     await usersRef.set({
       DiscordUserID: discordUserID,
-      PolytoriaUserID: polyUserID
-    })
+      PolytoriaUserID: polyUserID,
+    });
   }
 
   /**
@@ -80,9 +84,9 @@ export default class firebaseUtils {
    *
    * @param { string } discordUserID Targetted user ID
    */
-  public static async unLinkAccount (discordUserID: string): Promise<void> {
-    const usersRef = fireStore.collection('Users').doc(discordUserID)
-    await usersRef.delete()
+  public static async unLinkAccount(discordUserID: string): Promise<void> {
+    const usersRef = fireStore.collection('Users').doc(discordUserID);
+    await usersRef.delete();
   }
 
   /**
@@ -94,18 +98,18 @@ export default class firebaseUtils {
    * @param { string } keyName KeyName of Config
    * @param { any } valueData Value Data of Config
    */
-  public static async configServer (guildID: string, keyName: string, valueData: any): Promise<void> {
-    const guildRef = fireStore.collection('Configuration').doc(guildID)
+  public static async configServer(guildID: string, keyName: string, valueData: any): Promise<void> {
+    const guildRef = fireStore.collection('Configuration').doc(guildID);
     try {
       await guildRef.update({
-        [keyName]: valueData
-      })
+        [keyName]: valueData,
+      });
     } catch {
-      await guildRef.set({})
+      await guildRef.set({});
 
       await guildRef.update({
-        [keyName]: valueData
-      })
+        [keyName]: valueData,
+      });
     }
   }
 
@@ -115,15 +119,15 @@ export default class firebaseUtils {
    * @summary Get all server configuration
    *
    * @param { string } guildID Targetted Guild ID
-   * @returns { Promise<any> } Result data
+   * @return { Promise<any> } Result data
    */
-   public static async getServerConfig (guildID: string): Promise<any> {
-    const guildRef = fireStore.collection('Configuration').doc(guildID)
-    const doc = await guildRef.get()
+  public static async getServerConfig(guildID: string): Promise<any> {
+    const guildRef = fireStore.collection('Configuration').doc(guildID);
+    const doc = await guildRef.get();
     if (!doc.exists) {
-      return false
+      return false;
     } else {
-      return doc.data()
+      return doc.data();
     }
   }
 
@@ -134,10 +138,10 @@ export default class firebaseUtils {
    *
    * @param { string } guildID Targetted Guild ID
    * @param { string } keyName Config KeyName
-   * @returns { Promise<any> } Result Data
+   * @return { Promise<any> } Result Data
    */
-  public static async getSpecificServerConfig (guildID: string, keyName: string): Promise<any> {
-    const guildData: any = await firebaseUtils.getServerConfig(guildID)
-    return guildData[keyName]
+  public static async getSpecificServerConfig(guildID: string, keyName: string): Promise<any> {
+    const guildData: any = await firebaseUtils.getServerConfig(guildID);
+    return guildData[keyName];
   }
 }
