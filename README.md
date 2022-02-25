@@ -1,18 +1,18 @@
 ## Polytoria Community Verify
 ![Polytoria Community Verify](https://i.imgur.com/TFr6lWM.png)
 
-![Discord](https://img.shields.io/discord/905650109382004767) ![ok and](https://devpixels.xyz/okAnd.svg?v=2)
+![Discord](https://img.shields.io/discord/905650109382004767)
 
-Polytoria Community Verify Bot! Designed for all Discord Servers! Verify user by putting code in description. The bot use Typescript and run on node environment.
+Polytoria Community Verify Bot! Designed for all Discord Servers! Verify users using a code in their description. The bot uses TypeScript and runs on node environment.
 
 ### How to Setup
  1. Clone this git repository
- 2. Create New [Discord bot Application](https://discord.com/developers/applications)
- 3. Create .env File
- 4. Put TOKEN=YOUR_TOKEN inside .env file(YOUR_TOKEN means your bot Token)
+ 2. Create a new [Discord Bot Application](https://discord.com/developers/applications) or use an existing one
+ 3. Create a .env file
+ 4. Put TOKEN=YOUR_TOKEN inside the .env file and replace YOUR_TOKEN with your Discord bot token
  5. Run `npm i`. This command will install required modules.
- 6. Run `npm run build`. This command will compile from Typescript source to Normal JS
- 7. Final step, Run `npm start` and the bot will start automatically.
+ 6. Run `npm run build`. This command will compile from TypeScript source to Normal JS
+ 7. Finally, run `npm start` to start the bot.
 
 ### Credits
 - [to-boolean](https://github.com/rafaelrinaldi/to-boolean) by [rafaelrinaldi](https://github.com/rafaelrinaldi)
@@ -25,7 +25,7 @@ Polytoria Community Verify Bot! Designed for all Discord Servers! Verify user by
 - [firebase](https://firebase.google.com/) by google
 
 ### License
-This bot are under **Apache License 2.0**, Read more detail [here](https://github.com/StarManTheGamer/poly-verify/blob/main/LICENSE)
+This bot is licensed under the **Apache License 2.0** which you can read in more detail [here](https://github.com/Polytoria/poly-verify/blob/main/LICENSE)
 
 ### Contact
 [Discord Server](https://discord.gg/rtapv993QC)
