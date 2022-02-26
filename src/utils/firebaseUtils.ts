@@ -69,13 +69,50 @@ export default class firebaseUtils {
    * @param { string } discordUserID Targetted user ID
    * @param { string } polyUserID Targetted polytoria user ID
    */
-  public static async setVerified(discordUserID: string, polyUserID: string): Promise<void> {
+   public static async setVerified(discordUserID: string, polyUserID: string): Promise<void> {
     const usersRef = fireStore.collection('Users').doc(discordUserID);
     await usersRef.set({
       DiscordUserID: discordUserID,
       PolytoriaUserID: polyUserID,
     });
   }
+
+  /**
+   * createSession Function
+   *
+   * @summary Create session for specific user
+   *
+   * @param { string } discordUserID Targetted user ID
+   * @param { any } data Session data
+   */
+   public static async createSession(discordUserID: string, data: any): Promise<void> {
+    const usersRef = fireStore.collection('Sessions').doc(discordUserID);
+    await usersRef.set(data);
+  }
+
+   /**
+   * readSession Function
+   *
+   * @summary Read session of specific user
+   *
+   * @param { string } discordUserID Targetted user ID
+   */
+    public static async readSession(discordUserID: string): Promise<any> {
+      const usersRef = fireStore.collection('Sessions').doc(discordUserID);
+      return (await usersRef.get()).data();
+    }
+
+    /**
+   * deleteSession Function
+   *
+   * @summary Delete session of specific user
+   *
+   * @param { string } discordUserID Targetted user ID
+   */
+     public static async deleteSession(discordUserID: string): Promise<void> {
+      const usersRef = fireStore.collection('Sessions').doc(discordUserID);
+      await usersRef.delete();
+    }
 
   /**
    * unLinkAccount Function

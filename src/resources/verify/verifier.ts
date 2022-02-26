@@ -1,4 +1,4 @@
-import {Message} from 'discord.js';
+import {Client, Guild, GuildMember, Message} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 
@@ -9,7 +9,7 @@ import polyUtils from '../../utils/polyUtils.js';
  *
  * @param {Message} message Discord message
  */
-export default async function(message: Message) {
+export default async function(message: Message, args: string[], client: Client) {
   const isUserVerified: boolean = await firebaseUtils.isVerified(message.author.id);
   if (isUserVerified === true) {
     return;
@@ -40,6 +40,35 @@ export default async function(message: Message) {
         };
 
     message.author.send({embeds: [messageEmbedContent]});
+
+    const sessionData = await firebaseUtils.readSession(message.author.id)
+
+    console.log(sessionData)
+
+    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(sessionData.forGuild, 'verifiedRole');
+
+    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(sessionData.forGuild, 'setVerifiedNickname');
+
+    //@ts-expect-error
+    const guild: Guild = client.guilds.cache.find((r) => r.id === sessionData.forGuild)
+    //@ts-expect-error
+    const member: GuildMember = guild.members.cache.find((r) => r.id === message.author.id)
+
+    if (verifiedRoleConfig) {
+      const role = member.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
+
+      // @ts-expect-error
+      member.roles.add(role);
+    }
+    if (setNicknameConfig == true) {
+      const linkedUser = await firebaseUtils.getPolyUser(member.id);
+      const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
+
+      member.setNickname(polyUser.data.Username);
+    }
+    
+    firebaseUtils.deleteSession(message.author.id)
+
   } else {
     message.author.send('Wrong descrption provided, Make sure the code I sent were included!');
   }

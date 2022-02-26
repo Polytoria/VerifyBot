@@ -43,10 +43,15 @@ export const main = async function(message: Message, args: string[]) {
     return;
   }
   try {
-    await message.author.send('Gettin\' things done...');
+    if (message.member == null) {
+      // @ts-expect-error
+      await onUserJoined(message.author, null);
+      return
+    }
     // @ts-expect-error
     await onUserJoined(message.member, message.guild);
-  } catch {
+  } catch(err) {
+    console.log(err)
     message.channel.send('Couldn\'t send you a direct message! Please try again..');
   }
 };

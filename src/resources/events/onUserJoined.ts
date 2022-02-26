@@ -1,4 +1,5 @@
-import {GuildMember, Guild} from 'discord.js';
+import {GuildMember, Guild, User} from 'discord.js';
+import firebaseUtils from '../../utils/firebaseUtils.js';
 
 /**
  * On User Joined function
@@ -6,7 +7,11 @@ import {GuildMember, Guild} from 'discord.js';
  * @param {GuildMember} member Guild member
  * @param {Guild} guild Current guild
  */
-export default async function(member: GuildMember, guild: Guild) {
+export default async function(member: any, guild: Guild) {
+  if (guild != null) {
+    firebaseUtils.createSession(member.id,{forGuild: guild.id})
+  }
+
   const messageEmbedContent =
     {
       title: 'Polytoria Account Verification process',
@@ -20,5 +25,12 @@ export default async function(member: GuildMember, guild: Guild) {
       },
     };
 
-  member.user.send({embeds: [messageEmbedContent]});
+  if (member["user"] !== undefined) {
+    console.log("is User")
+    console.log(member.id)
+    member.send({embeds: [messageEmbedContent]});
+  } else {
+    console.log("is Guild Member")
+    member.user.send({embeds: [messageEmbedContent]});
+  }
 }
