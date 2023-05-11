@@ -16,7 +16,7 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromUsername(username: string): Promise<any> {
-    const response = await axios.get('https://api.polytoria.com/v1/users/getbyusername?username=' + username, {
+    const response = await axios.get('https://api.polytoria.com/v1/users/find?username=' + username, {
       validateStatus: () => true,
     });
 
@@ -32,7 +32,7 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromID(id: number): Promise<any> {
-    const response = await axios.get('https://api.polytoria.com/v1/users/user?id=' + id, {
+    const response = await axios.get('https://api.polytoria.com/v1/users/find?id=' + id, {
       validateStatus: () => true,
     });
 
