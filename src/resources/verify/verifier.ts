@@ -41,18 +41,18 @@ export default async function(message: Message, args: string[], client: Client) 
 
     message.author.send({embeds: [messageEmbedContent]});
 
-    const sessionData = await firebaseUtils.readSession(message.author.id)
+    const sessionData = await firebaseUtils.readSession(message.author.id);
 
-    console.log(sessionData)
+    console.log(sessionData);
 
     const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(sessionData.forGuild, 'verifiedRole');
 
     const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(sessionData.forGuild, 'setVerifiedNickname');
 
-    //@ts-expect-error
-    const guild: Guild = client.guilds.cache.find((r) => r.id === sessionData.forGuild)
-    //@ts-expect-error
-    const member: GuildMember = guild.members.cache.find((r) => r.id === message.author.id)
+    // @ts-expect-error
+    const guild: Guild = client.guilds.cache.find((r) => r.id === sessionData.forGuild);
+    // @ts-expect-error
+    const member: GuildMember = guild.members.cache.find((r) => r.id === message.author.id);
 
     if (verifiedRoleConfig) {
       const role = member.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
@@ -66,9 +66,8 @@ export default async function(message: Message, args: string[], client: Client) 
 
       member.setNickname(polyUser.data.Username);
     }
-    
-    firebaseUtils.deleteSession(message.author.id)
 
+    firebaseUtils.deleteSession(message.author.id);
   } else {
     message.author.send('Wrong descrption provided, Make sure the code I sent were included!');
   }

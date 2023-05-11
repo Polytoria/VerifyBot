@@ -46,12 +46,12 @@ export const main = async function(message: Message, args: string[]) {
     if (message.member == null) {
       // @ts-expect-error
       await onUserJoined(message.author, null);
-      return
+      return;
     }
     // @ts-expect-error
     await onUserJoined(message.member, message.guild);
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     message.channel.send('Couldn\'t send you a direct message! Please try again..');
   }
 };

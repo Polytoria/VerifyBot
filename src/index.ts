@@ -31,10 +31,10 @@ firebaseUtils.init();
 
 // On Message sent
 client.on('messageCreate', async (message) => {
-  console.log(message.content)
+  console.log(message.content);
   // Parse the command
   const parsed = parseCmd(message, prefix, {allowSpaceBeforeCommand: true});
-  console.log(parsed)
+  console.log(parsed);
 
   if (parsed.success == true && parsed.command.toLowerCase() == 'verify') {
     commands['verify'](message, parsed.arguments);
