@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StarManTheGamer/poly-verify.git"
+    "url": "git+https://github.com/Polytoria/VerifyBot.git"
   },
   "author": "StarManTheGamer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StarManTheGamer/poly-verify/issues"
+    "url": "https://github.com/Polytoria/VerifyBot/issues"
   },
-  "homepage": "https://github.com/StarManTheGamer/poly-verify#readme",
+  "homepage": "https://github.com/Polytoria/VerifyBot/#readme",
   "type": "module",
   "devDependencies": {
     "@types/to-boolean": "^1.0.0",
