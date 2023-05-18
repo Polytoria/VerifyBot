@@ -37,7 +37,7 @@ export const main = async function(message: Message, args: string[]) {
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
       // @ts-expect-error
-      message.member.setNickname(polyUser.data.Username);
+      message.member.setNickname(polyUser.username);
     }
     message.channel.send('Your Polytoria account has already been verified. To unlink use `!poly unverify`');
     return;

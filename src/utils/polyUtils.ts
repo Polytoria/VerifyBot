@@ -41,6 +41,11 @@ export default class polyUtils {
       validateStatus: () => true,
     });
 
-    return response;
+    const {data} = response;
+
+    // Assuming the API response contains a "user" field, you can access it like this:
+    const user = data.user;
+
+    return user;
   }
 }

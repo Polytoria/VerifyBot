@@ -26,7 +26,7 @@ export default async function(message: Message, args: string[], client: Client) 
           description: 'Your account has successfully been verified! 🥳',
           color: 0x66ff91,
           thumbnail: {
-            url: `${userInfo.avatarIconUrl}`,
+            url: `${userInfo.avatarUrl}`,
           },
           footer: {
             text: 'Type `!poly verify` in your recently joined server to get verified role! (If setted)',

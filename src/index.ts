@@ -93,7 +93,7 @@ client.on('guildMemberAdd', async (member) => {
       const linkedUser = await firebaseUtils.getPolyUser(member.id);
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
-      member.setNickname(polyUser.data.Username);
+      member.setNickname(polyUser.username);
     }
     return;
   }
