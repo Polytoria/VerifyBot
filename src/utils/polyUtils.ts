@@ -19,12 +19,12 @@ export default class polyUtils {
     const response = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
       validateStatus: () => true,
     });
-  
-    const { data } = response;
-  
+
+    const {data} = response;
+
     // Assuming the API response contains a "user" field, you can access it like this:
     const user = data.user;
-  
+
     return user;
   }
 
