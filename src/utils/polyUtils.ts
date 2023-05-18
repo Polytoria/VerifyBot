@@ -16,11 +16,16 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromUsername(username: string): Promise<any> {
-    const response = await axios.get('https://api.polytoria.com/v1/users/find?username=' + username, {
+    const response = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
       validateStatus: () => true,
     });
-
-    return response;
+  
+    const { data } = response;
+  
+    // Assuming the API response contains a "user" field, you can access it like this:
+    const user = data.user;
+  
+    return user;
   }
 
   /**

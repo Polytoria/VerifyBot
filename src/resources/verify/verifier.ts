@@ -16,15 +16,9 @@ export default async function(message: Message, args: string[], client: Client) 
   }
 
   const userInfo: any = await polyUtils.getUserInfoFromUsername(message.content);
-  if (userInfo.status === 400) {
-    message.author.send('User not found! Maybe you have made some typo, Try send me message again!');
-  }
-  if (userInfo.status.toString().startsWith('5')) {
-    message.author.send('There\'s some issue going on with Polytoria API right now, Try again later.');
-  }
 
-  if (userInfo.data.Description.includes(`poly-verify-${message.author.id}`)) {
-    await firebaseUtils.setVerified(message.author.id, userInfo.data.ID);
+  if (userInfo.description.includes(`poly-verify-${message.author.id}`)) {
+    await firebaseUtils.setVerified(message.author.id, userInfo.id);
 
     const messageEmbedContent =
         {
@@ -32,7 +26,7 @@ export default async function(message: Message, args: string[], client: Client) 
           description: 'Your account has successfully been verified! 🥳',
           color: 0x66ff91,
           thumbnail: {
-            url: `https://polytoria.com/assets/thumbnails/avatars/headshots/${userInfo.data.AvatarHash}.png`,
+           url: `${userInfo.avatarIconUrl}`
           },
           footer: {
             text: 'Type `!poly verify` in your recently joined server to get verified role! (If setted)',
@@ -64,7 +58,7 @@ export default async function(message: Message, args: string[], client: Client) 
       const linkedUser = await firebaseUtils.getPolyUser(member.id);
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
-      member.setNickname(polyUser.data.Username);
+      member.setNickname(polyUser.username);
     }
 
     firebaseUtils.deleteSession(message.author.id);
