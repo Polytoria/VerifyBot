@@ -24,13 +24,13 @@ export default class polyUtils {
     const data = response.data;
     const id = data.id;
 
-    const id_response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
+    const idResponse = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
       validateStatus: () => true,
     });
 
-    const user_data = id_response.data;
+    const userData = idResponse.data;
 
-    return user_data;
+    return userData;
   }
 
   /**
@@ -46,8 +46,8 @@ export default class polyUtils {
       validateStatus: () => true,
     });
 
-    const user_data = response.data;
+    const userData = response.data;
 
-    return user_data;
+    return userData;
   }
 }
