@@ -20,12 +20,17 @@ export default class polyUtils {
       validateStatus: () => true,
     });
 
-    const {data} = response;
+    // get id
+    const data = response.data;
+    const id = data.id;
 
-    // Assuming the API response contains a "user" field, you can access it like this:
-    const user = data.user;
+    const id_response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
+      validateStatus: () => true,
+    });
 
-    return user;
+    const user_data = id_response.data;
+
+    return user_data;
   }
 
   /**
@@ -37,15 +42,12 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromID(id: number): Promise<any> {
-    const response = await axios.get('https://api.polytoria.com/v1/users/find?id=' + id, {
+    const response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
       validateStatus: () => true,
     });
 
-    const {data} = response;
+    const user_data = response.data;
 
-    // Assuming the API response contains a "user" field, you can access it like this:
-    const user = data.user;
-
-    return user;
+    return user_data;
   }
 }
