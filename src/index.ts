@@ -60,11 +60,11 @@ client.on('messageCreate', async (message) => {
 client.on('ready', () => {
   log.logSuccess('Bot', 'Successfully Connected to Discord!');
   // @ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, { type: ActivityType.Watching })
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: ActivityType.Watching});
 
   setInterval(function() {
     // @ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, { type: ActivityType.Watching })
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: ActivityType.Watching});
   }, 60000);
 });
 
