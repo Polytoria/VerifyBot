@@ -16,7 +16,7 @@ export const description = 'Configurate How the bot will works!';
   * Command main function
   */
 export const main = async function(message: Message, args: string[]) {
-  if (message.member?.permissions.has('ADMINISTRATOR') == false) {
+  if (message.member?.permissions.has('Administrator') == false) {
     message.channel.send('Permission Declined');
     return;
   }
