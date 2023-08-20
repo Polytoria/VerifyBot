@@ -1,4 +1,4 @@
-import {Intents, Client} from 'discord.js';
+import {GatewayIntentBits, Client} from 'discord.js';
 import {config as configEnv} from 'dotenv';
 import firebaseUtils from './utils/firebaseUtils.js';
 import polyUtils from './utils/polyUtils.js';
@@ -16,12 +16,13 @@ const prefix = '!poly'; // Bot's Default prefix.
 // Initialize Discord Client
 const client = new Client({
   intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.DIRECT_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS,
-  ],
-});
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.DirectMessages
+  ]
+})
 
 // Configurate ENV files
 configEnv();
