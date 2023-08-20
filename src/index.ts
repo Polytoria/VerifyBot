@@ -1,4 +1,4 @@
-import {GatewayIntentBits, Client} from 'discord.js';
+import {GatewayIntentBits, Client, ActivityType} from 'discord.js';
 import {config as configEnv} from 'dotenv';
 import firebaseUtils from './utils/firebaseUtils.js';
 import polyUtils from './utils/polyUtils.js';
@@ -60,11 +60,11 @@ client.on('messageCreate', async (message) => {
 client.on('ready', () => {
   log.logSuccess('Bot', 'Successfully Connected to Discord!');
   // @ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: 'WATCHING'});
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
 
   setInterval(function() {
     // @ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: 'WATCHING'});
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
   }, 60000);
 });
 
