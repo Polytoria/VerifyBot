@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "axios": "^0.25.0",
-    "chalk": "^5.0.0",
+    "axios": "^1.4.0",
+    "chalk": "^5.3.0",
     "discord-command-parser": "^1.5.3",
     "discord.js": "^14.13.0",
-    "dotenv": "^14.3.2",
+    "dotenv": "^16.3.1",
     "firebase-admin": "^10.0.2",
     "parse-string-boolean": "^1.0.1",
     "path": "^0.12.7",
@@ -13,7 +13,7 @@
   },
   "name": "poly-verify",
   "description": "Polytoria Community Verify",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -33,13 +33,13 @@
   "type": "module",
   "devDependencies": {
     "@types/to-boolean": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^5.12.1",
-    "eslint": "^8.40.0",
+    "eslint": "^8.47.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
+    "eslint-plugin-promise": "^6.1.1"
   }
 }

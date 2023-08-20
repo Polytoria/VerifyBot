@@ -3,7 +3,7 @@ import {main as unVerify} from './resources/commands/unverify.js';
 import {main as bind} from './resources/commands/bind.js';
 
 export default {
-  verify: verify,
+  verify,
   unverify: unVerify,
-  bind: bind,
+  bind,
 };
