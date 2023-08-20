@@ -20,9 +20,9 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.DirectMessages
-  ]
-})
+    GatewayIntentBits.DirectMessages,
+  ],
+});
 
 // Configurate ENV files
 configEnv();
