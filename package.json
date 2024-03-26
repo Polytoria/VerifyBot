@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.6.8",
     "chalk": "^5.3.0",
     "discord-command-parser": "^1.5.3",
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.3.1",
-    "firebase-admin": "^10.0.2",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^12.0.0",
     "parse-string-boolean": "^1.0.1",
     "path": "^0.12.7",
     "to-boolean": "^1.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.4.3"
   },
   "name": "poly-verify",
   "description": "Polytoria Community Verify",
@@ -32,13 +32,13 @@
   "homepage": "https://github.com/Polytoria/VerifyBot/#readme",
   "type": "module",
   "devDependencies": {
-    "@types/to-boolean": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^5.12.1",
-    "eslint": "^8.47.0",
+    "@types/to-boolean": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.28.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1"
   }
