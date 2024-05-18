@@ -20,7 +20,7 @@ export default async function(member: any, guild: Guild) {
         url: 'https://i.imgur.com/fqvGOgW.png',
       },
       footer: {
-        text: 'After you has been verified, You will not receive this message again.',
+        text: 'After you have been verified, You will not receive this message again.',
       },
     };
 
