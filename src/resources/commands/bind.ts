@@ -9,6 +9,12 @@ export const main = async function(interaction: CommandInteraction) {
     await interaction.reply("You must run this command in a server!")
     return
   }
+  
+  if((await interaction.guild?.members.fetchMe()) == null){
+    await interaction.reply("I need to have joined the server in which you are running the command in!")
+    return
+  }
+
   // @ts-expect-error
   if (interaction.member?.permissions.has('Administrator') == false) {
     await interaction.reply('Permission Declined');

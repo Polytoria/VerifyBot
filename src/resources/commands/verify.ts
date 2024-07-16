@@ -1,4 +1,4 @@
-import {BaseInteraction, CommandInteraction, Message} from 'discord.js';
+import {BaseInteraction, CommandInteraction, Message, PermissionsBitField} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 import onUserJoined from '../events/onUserJoined.js';
@@ -9,6 +9,10 @@ import onUserJoined from '../events/onUserJoined.js';
 export const main = async function(interaction: CommandInteraction) {
   if(!interaction.inGuild()){
     await interaction.reply("You must run this command in a server!")
+    return
+  }
+  if((await interaction.guild?.members.fetchMe()) == null){
+    await interaction.reply("I need to have joined the server in which you are running the command in!")
     return
   }
   
@@ -30,7 +34,13 @@ export const main = async function(interaction: CommandInteraction) {
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
       // @ts-expect-error
-      interaction.member.setNickname(polyUser.username);
+      if((await interaction.guild?.members.fetchMe()).permissions.has(PermissionsBitField.Flags.ManageNicknames)){
+        // @ts-expect-error
+        interaction.member.setNickname(polyUser.username);
+      } else {
+        interaction.reply("Couldn't change your nickname, I lack the permission to!\n\nYour Polytoria account has already been verified. To unlink use `/unverify`")
+        return
+      }
 
     }
 
