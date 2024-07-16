@@ -41,12 +41,12 @@ export const main = async function(interaction: CommandInteraction) {
   try {
     if (interaction.member == null) {
       // @ts-expect-error
-      await onUserJoined(message.author, null);
+      await onUserJoined(interaction.user, null);
       await interaction.reply("I sent you a message in DMs!")
       return;
     }
     // @ts-expect-error
-    await onUserJoined(message.member, message.guild);
+    await onUserJoined(interaction.member, interaction.guild);
   } catch (err) {
     console.log(err);
     await interaction.reply('Couldn\'t send you a direct message! Please try again..');
