@@ -29,7 +29,7 @@ export const main = async function(interaction: CommandInteraction) {
     return await interaction.reply({embeds: [messageEmbedContent]});
   }
 
-  if(configToModify == "verifiedRole"){
+  if(configToModify == "verifiedrole"){
     // @ts-expect-error
     const role = interaction.options.getRole("role")
     if(role == null){
