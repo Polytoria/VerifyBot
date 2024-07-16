@@ -29,7 +29,7 @@ export default async function(message: Message, args: string[], client: Client) 
             url: `${userInfo.thumbnail.avatar}`,
           },
           footer: {
-            text: 'Type `!poly verify` in your recently joined server to get verified role! (If setted)',
+            text: 'Type `/verify` in your recently joined server to get verified role! (If set)',
           },
         };
 
@@ -63,6 +63,6 @@ export default async function(message: Message, args: string[], client: Client) 
 
     firebaseUtils.deleteSession(message.author.id);
   } else {
-    message.author.send('Wrong descrption provided, Make sure the code I sent were included!');
+    message.author.send("Couldn't find the code in the description! Make sure that you put the code there.");
   }
 }

@@ -1,57 +1,54 @@
-import {Message} from 'discord.js';
+import {BaseInteraction, CommandInteraction, Message} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 import onUserJoined from '../events/onUserJoined.js';
 
 /**
- * Command Name
- */
-export const name = 'verify';
-
-/**
-  * Command Description
-  */
-export const description = 'Get your Discord account verified!';
-
-/**
   * Command main function
   */
-export const main = async function(message: Message, args: string[]) {
-  const isVerified = await firebaseUtils.isVerified(message.author.id);
+export const main = async function(interaction: CommandInteraction) {
+  if(!interaction.inGuild()){
+    await interaction.reply("You must run this command in a server!")
+    return
+  }
+  
+  const isVerified = await firebaseUtils.isVerified(interaction.user.id);
   if (isVerified === true) {
-    // @ts-expect-error
-    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'verifiedRole');
+    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(interaction.guildId, 'verifiedRole');
 
-    // @ts-expect-error
-    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'setVerifiedNickname');
+    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(interaction.guildId, 'setVerifiedNickname');
 
     if (verifiedRoleConfig) {
       // @ts-expect-error
-      const role = message.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
+      const role = interaction.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
 
       // @ts-expect-error
-      message.member.roles.add(role);
+      interaction.member.roles.add(role)
     }
     if (setNicknameConfig == true) {
-      const linkedUser = await firebaseUtils.getPolyUser(message.author.id);
+      const linkedUser = await firebaseUtils.getPolyUser(interaction.user.id);
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
       // @ts-expect-error
-      message.member.setNickname(polyUser.username);
+      interaction.member.setNickname(polyUser.username);
+
     }
-    message.channel.send('Your Polytoria account has already been verified. To unlink use `!poly unverify`');
+
+    // @ts-expect-error
+    interaction.channel.send('Your Polytoria account has already been verified. To unlink use `/unverify`');
     return;
   }
   try {
-    if (message.member == null) {
+    if (interaction.member == null) {
       // @ts-expect-error
       await onUserJoined(message.author, null);
+      await interaction.reply("I sent you a message in DMs!")
       return;
     }
     // @ts-expect-error
     await onUserJoined(message.member, message.guild);
   } catch (err) {
     console.log(err);
-    message.channel.send('Couldn\'t send you a direct message! Please try again..');
+    await interaction.reply('Couldn\'t send you a direct message! Please try again..');
   }
 };

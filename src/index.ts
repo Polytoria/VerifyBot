@@ -1,17 +1,12 @@
-import {GatewayIntentBits, Client, ActivityType} from 'discord.js';
+import {GatewayIntentBits, Client, ActivityType, Collection, Events, BaseInteraction} from 'discord.js';
 import {config as configEnv} from 'dotenv';
 import firebaseUtils from './utils/firebaseUtils.js';
 import polyUtils from './utils/polyUtils.js';
 import log from './utils/logUtils.js';
-import {parse as parseCmd} from 'discord-command-parser';
+import commandsData from './commandsData.js'
 
 import onUserJoined from './resources/events/onUserJoined.js';
 import verifier from './resources/verify/verifier.js';
-
-import commands from './export.js';
-
-// Configurable Variables
-const prefix = '!poly'; // Bot's Default prefix.
 
 // Initialize Discord Client
 const client = new Client({
@@ -30,41 +25,61 @@ configEnv();
 // Connect Application to Firebase
 firebaseUtils.init();
 
+// @ts-expect-error
+client.commands = new Collection()
+
+commandsData.forEach((commandData, index) => {
+  // @ts-expect-error
+  client.commands.set(commandData.data.name, commandData)
+})
+
 // On Message sent
-client.on('messageCreate', async (message) => {
-  console.log(message.content);
-  // Parse the command
-  const parsed = parseCmd(message, prefix, {allowSpaceBeforeCommand: true});
-  console.log(parsed);
-
-  if (parsed.success == true && parsed.command.toLowerCase() == 'verify') {
-    commands['verify'](message, parsed.arguments);
-    return;
+client.on(Events.MessageCreate, async (message) => {
+  if(message.author.bot) return
+  if(message.content.startsWith("!poly") && message.inGuild()){
+    await message.reply("The Polytoria Community Verify Bot has switched to slash commands!")
+    return
   }
+  verifier(message, [], client)
+});
 
-  if (message.guild === null) {
-    verifier(message, [], client);
-    return;
+
+client.on(Events.InteractionCreate, async (interaction: BaseInteraction) => {
+  if(!interaction.isCommand()){
+    return
   }
-
-  if (!parsed.success) return;
 
   // @ts-expect-error
-  const targetFunction = commands[parsed.command.toLowerCase()];
+  const command: any = interaction.client.commands.get(interaction.commandName)
 
-  if (targetFunction) {
-    targetFunction(message, parsed.arguments, client);
+  if(!command){
+    interaction.reply("Command doesn't exist")
   }
-});
+
+  try {
+    if (command.constructor.name === 'AsyncFunction') {
+      await command.execute(interaction)
+    } else {
+      command.execute(interaction)
+    }
+  } catch (error: any) {
+    if (interaction.replied) {
+      await interaction.followUp('Failed to execute command: ' + error)
+    } else {
+      await interaction.reply('Failed to execute command: ' + error)
+    }
+    log.logError("Bot", error.toString())
+  }
+})
 
 client.on('ready', () => {
   log.logSuccess('Bot', 'Successfully Connected to Discord!');
   // @ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: ActivityType.Watching});
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | /verify`, {type: ActivityType.Watching});
 
   setInterval(function() {
     // @ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, {type: ActivityType.Watching});
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | /verify`, {type: ActivityType.Watching});
   }, 60000);
 });
 
