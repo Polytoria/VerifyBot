@@ -1,4 +1,4 @@
-import {CommandInteraction, Message} from 'discord.js';
+import {CommandInteraction} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 
 /**

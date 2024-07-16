@@ -1,4 +1,4 @@
-import {BaseInteraction, CommandInteraction, Message, PermissionsBitField} from 'discord.js';
+import {CommandInteraction, PermissionsBitField} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 import onUserJoined from '../events/onUserJoined.js';
