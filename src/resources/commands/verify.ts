@@ -7,15 +7,15 @@ import onUserJoined from '../events/onUserJoined.js';
   * Command main function
   */
 export const main = async function(interaction: CommandInteraction) {
-  if(!interaction.inGuild()){
-    await interaction.reply("You must run this command in a server!")
-    return
+  if (!interaction.inGuild()) {
+    await interaction.reply('You must run this command in a server!');
+    return;
   }
-  if((await interaction.guild?.members.fetchMe()) == null){
-    await interaction.reply("I need to have joined the server in which you are running the command in!")
-    return
+  if ((await interaction.guild?.members.fetchMe()) == null) {
+    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    return;
   }
-  
+
   const isVerified = await firebaseUtils.isVerified(interaction.user.id);
   if (isVerified === true) {
     const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(interaction.guildId, 'verifiedRole');
@@ -27,21 +27,20 @@ export const main = async function(interaction: CommandInteraction) {
       const role = interaction.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
 
       // @ts-expect-error
-      interaction.member.roles.add(role)
+      interaction.member.roles.add(role);
     }
     if (setNicknameConfig == true) {
       const linkedUser = await firebaseUtils.getPolyUser(interaction.user.id);
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
       // @ts-expect-error
-      if((await interaction.guild?.members.fetchMe()).permissions.has(PermissionsBitField.Flags.ManageNicknames)){
+      if ((await interaction.guild?.members.fetchMe()).permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
         // @ts-expect-error
         interaction.member.setNickname(polyUser.username);
       } else {
-        interaction.reply("Couldn't change your nickname, I lack the permission to!\n\nYour Polytoria account has already been verified. To unlink use `/unverify`")
-        return
+        interaction.reply('Couldn\'t change your nickname, I lack the permission to!\n\nYour Polytoria account has already been verified. To unlink use `/unverify`');
+        return;
       }
-
     }
 
     interaction.reply('Your Polytoria account has already been verified. To unlink use `/unverify`');
@@ -55,7 +54,7 @@ export const main = async function(interaction: CommandInteraction) {
     }
     // @ts-expect-error
     await onUserJoined(interaction.member, interaction.guild);
-    await interaction.reply("I sent you a message in DMs!")
+    await interaction.reply('I sent you a message in DMs!');
   } catch (err) {
     console.log(err);
     await interaction.reply('Couldn\'t send you a direct message! Please try again..');

@@ -3,7 +3,7 @@ import {config as configEnv} from 'dotenv';
 import firebaseUtils from './utils/firebaseUtils.js';
 import polyUtils from './utils/polyUtils.js';
 import log from './utils/logUtils.js';
-import commandsData from './commandsData.js'
+import commandsData from './commandsData.js';
 
 import onUserJoined from './resources/events/onUserJoined.js';
 import verifier from './resources/verify/verifier.js';
@@ -26,51 +26,51 @@ configEnv();
 firebaseUtils.init();
 
 // @ts-expect-error
-client.commands = new Collection()
+client.commands = new Collection();
 
 commandsData.forEach((commandData, index) => {
   // @ts-expect-error
-  client.commands.set(commandData.data.name, commandData)
-})
+  client.commands.set(commandData.data.name, commandData);
+});
 
 // On Message sent
 client.on(Events.MessageCreate, async (message) => {
-  if(message.author.bot) return
-  if(message.content.startsWith("!poly") && message.inGuild()){
-    await message.reply("The Polytoria Community Verify Bot has switched to slash commands!")
-    return
+  if (message.author.bot) return;
+  if (message.content.startsWith('!poly') && message.inGuild()) {
+    await message.reply('The Polytoria Community Verify Bot has switched to slash commands!');
+    return;
   }
-  verifier(message, [], client)
+  verifier(message, [], client);
 });
 
 
 client.on(Events.InteractionCreate, async (interaction: BaseInteraction) => {
-  if(!interaction.isCommand()){
-    return
+  if (!interaction.isCommand()) {
+    return;
   }
 
   // @ts-expect-error
-  const command: any = interaction.client.commands.get(interaction.commandName)
+  const command: any = interaction.client.commands.get(interaction.commandName);
 
-  if(!command){
-    interaction.reply("Command doesn't exist")
+  if (!command) {
+    interaction.reply('Command doesn\'t exist');
   }
 
   try {
     if (command.constructor.name === 'AsyncFunction') {
-      await command.execute(interaction)
+      await command.execute(interaction);
     } else {
-      command.execute(interaction)
+      command.execute(interaction);
     }
   } catch (error: any) {
     if (interaction.replied) {
-      await interaction.followUp('Failed to execute command: ' + error)
+      await interaction.followUp('Failed to execute command: ' + error);
     } else {
-      await interaction.reply('Failed to execute command: ' + error)
+      await interaction.reply('Failed to execute command: ' + error);
     }
-    log.logError("Bot", error.toString())
+    log.logError('Bot', error.toString());
   }
-})
+});
 
 client.on('ready', () => {
   log.logSuccess('Bot', 'Successfully Connected to Discord!');

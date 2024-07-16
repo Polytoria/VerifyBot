@@ -63,6 +63,6 @@ export default async function(message: Message, args: string[], client: Client) 
 
     firebaseUtils.deleteSession(message.author.id);
   } else {
-    message.author.send("Couldn't find the code in the description! Make sure that you put the code there.");
+    message.author.send('Couldn\'t find the code in the description! Make sure that you put the code there.');
   }
 }

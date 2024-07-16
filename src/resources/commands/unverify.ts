@@ -4,13 +4,13 @@ import firebaseUtils from '../../utils/firebaseUtils.js';
   * Command main function
   */
 export const main = async function(interaction: CommandInteraction, args: string[]) {
-  if(!interaction.inGuild()){
-    await interaction.reply("You must run this command in a server!")
-    return
+  if (!interaction.inGuild()) {
+    await interaction.reply('You must run this command in a server!');
+    return;
   }
-  if((await interaction.guild?.members.fetchMe()) == null){
-    await interaction.reply("I need to have joined the server in which you are running the command in!")
-    return
+  if ((await interaction.guild?.members.fetchMe()) == null) {
+    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    return;
   }
 
   const isVerified = await firebaseUtils.isVerified(interaction.user.id);
