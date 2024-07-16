@@ -1,57 +1,62 @@
-import {Message} from 'discord.js';
+import {BaseInteraction, CommandInteraction, Message, PermissionsBitField} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 import onUserJoined from '../events/onUserJoined.js';
 
 /**
- * Command Name
- */
-export const name = 'verify';
-
-/**
-  * Command Description
-  */
-export const description = 'Get your Discord account verified!';
-
-/**
   * Command main function
   */
-export const main = async function(message: Message, args: string[]) {
-  const isVerified = await firebaseUtils.isVerified(message.author.id);
-  if (isVerified === true) {
-    // @ts-expect-error
-    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'verifiedRole');
+export const main = async function(interaction: CommandInteraction) {
+  if (!interaction.inGuild()) {
+    await interaction.reply('You must run this command in a server!');
+    return;
+  }
+  if ((await interaction.guild?.members.fetchMe()) == null) {
+    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    return;
+  }
 
-    // @ts-expect-error
-    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'setVerifiedNickname');
+  const isVerified = await firebaseUtils.isVerified(interaction.user.id);
+  if (isVerified === true) {
+    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(interaction.guildId, 'verifiedRole');
+
+    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(interaction.guildId, 'setVerifiedNickname');
 
     if (verifiedRoleConfig) {
       // @ts-expect-error
-      const role = message.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
+      const role = interaction.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
 
       // @ts-expect-error
-      message.member.roles.add(role);
+      interaction.member.roles.add(role);
     }
     if (setNicknameConfig == true) {
-      const linkedUser = await firebaseUtils.getPolyUser(message.author.id);
+      const linkedUser = await firebaseUtils.getPolyUser(interaction.user.id);
       const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID);
 
       // @ts-expect-error
-      message.member.setNickname(polyUser.username);
+      if ((await interaction.guild?.members.fetchMe()).permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
+        // @ts-expect-error
+        interaction.member.setNickname(polyUser.username);
+      } else {
+        interaction.reply('Couldn\'t change your nickname, I lack the permission to!\n\nYour Polytoria account has already been verified. To unlink use `/unverify`');
+        return;
+      }
     }
-    message.channel.send('Your Polytoria account has already been verified. To unlink use `!poly unverify`');
+
+    interaction.reply('Your Polytoria account has already been verified. To unlink use `/unverify`');
     return;
   }
   try {
-    if (message.member == null) {
+    if (interaction.member == null) {
       // @ts-expect-error
-      await onUserJoined(message.author, null);
+      await onUserJoined(interaction.user, null);
       return;
     }
     // @ts-expect-error
-    await onUserJoined(message.member, message.guild);
+    await onUserJoined(interaction.member, interaction.guild);
+    await interaction.reply('I sent you a message in DMs!');
   } catch (err) {
     console.log(err);
-    message.channel.send('Couldn\'t send you a direct message! Please try again..');
+    await interaction.reply('Couldn\'t send you a direct message! Please try again..');
   }
 };

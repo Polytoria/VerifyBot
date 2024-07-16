@@ -1,36 +1,34 @@
-import {Message} from 'discord.js';
+import {CommandInteraction, Message} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
-
-/**
- * Command Name
- */
-export const name = 'unVerify';
-
-/**
-  * Command Description
-  */
-export const description = 'Unlink your Polytoria account with discord.';
-
 /**
   * Command main function
   */
-export const main = async function(message: Message, args: string[]) {
-  const isVerified = await firebaseUtils.isVerified(message.author.id);
-  if (isVerified === false) {
-    message.channel.send('Your Polytoria account haven\'t been verified yet. To verify use `!poly verify`');
+export const main = async function(interaction: CommandInteraction, args: string[]) {
+  if (!interaction.inGuild()) {
+    await interaction.reply('You must run this command in a server!');
     return;
   }
-  await firebaseUtils.unLinkAccount(message.author.id);
-  message.channel.send('Your Polytoria account has been unlinked.');
+  if ((await interaction.guild?.members.fetchMe()) == null) {
+    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    return;
+  }
+
+  const isVerified = await firebaseUtils.isVerified(interaction.user.id);
+  if (isVerified === false) {
+    await interaction.reply('Your Polytoria account hasn\'t been verified yet. To verify use `/verify`');
+    return;
+  }
+  await firebaseUtils.unLinkAccount(interaction.user.id);
+  await interaction.reply('Your Polytoria account has been unlinked.');
 
   // @ts-expect-error
-  const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'verifiedRole');
+  const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(interaction.guild.id, 'verifiedRole');
   if (verifiedRoleConfig) {
     // @ts-expect-error
-    const role = message.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
+    const role = interaction.guild.roles.cache.find((r) => r.id === verifiedRoleConfig);
 
     // @ts-expect-error
-    message.member.roles.remove(role);
+    interaction.member.roles.remove(role);
 
     return;
   }
