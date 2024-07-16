@@ -38,7 +38,7 @@ export const main = async function(interaction: CommandInteraction) {
       firebaseUtils.configServer(
         // @ts-expect-error
         interaction.guild.id,
-        "verifiedrole",
+        "verifiedRole",
         // @ts-expect-error
         interaction.options.getRole("role").id,
     );
