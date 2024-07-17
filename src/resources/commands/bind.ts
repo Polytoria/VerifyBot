@@ -24,17 +24,6 @@ export const main = async function(interaction: CommandInteraction) {
   // @ts-expect-error
   const configToModify = interaction.options.getSubcommand();
 
-  if (configToModify == null) {
-    const messageEmbedContent =
-        {
-          title: 'Bind command',
-          description: 'It looks like you\'re using wrong format! Here\'s tutorial on how it works!\n```/bind [config_name] [value]```\n**Available Settings**\n\n`verifiedRole` Set the role that will be given to verified users. Value should be a role\n`setVerifiedNickname` Set is the bot should set the verified user\'s nickname or not',
-          color: 0x66ff91,
-        };
-
-    return await interaction.reply({embeds: [messageEmbedContent]});
-  }
-
   if (configToModify == 'verifiedrole') {
     // @ts-expect-error
     const role = interaction.options.getRole('role');
