@@ -1,5 +1,6 @@
 import {CommandInteraction} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
+import emojiUtils from '../../utils/emojiUtils.js';
 
 /**
   * Command main function
@@ -37,7 +38,7 @@ export const main = async function(interaction: CommandInteraction) {
           // @ts-expect-error
           interaction.options.getRole('role').id,
       );
-      await interaction.reply('🎉 Succesfully Binded Verified role!');
+      await interaction.reply(`${emojiUtils.checkmark} **Success!** The role you have selected has been binded and will be given to users after they verify.`);
     }
   } else if (configToModify == 'setverifiednickname') {
     // @ts-expect-error
