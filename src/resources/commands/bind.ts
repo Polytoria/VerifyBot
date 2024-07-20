@@ -49,6 +49,6 @@ export const main = async function(interaction: CommandInteraction) {
         'setVerifiedNickname',
         boolean,
     );
-    await interaction.reply('${emojiUtils.checkmark} **Success!** The configuration for binded nickname has been set to ' + boolean + '.');
+    await interaction.reply(`${emojiUtils.checkmark} **Success!** The configuration for binded nickname has been set to ` + boolean + '.');
   }
 };
