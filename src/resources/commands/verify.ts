@@ -2,17 +2,18 @@ import {CommandInteraction, PermissionsBitField} from 'discord.js';
 import firebaseUtils from '../../utils/firebaseUtils.js';
 import polyUtils from '../../utils/polyUtils.js';
 import onUserJoined from '../events/onUserJoined.js';
+import emojiUtils from '../../utils/emojiUtils.js';
 
 /**
   * Command main function
   */
 export const main = async function(interaction: CommandInteraction) {
   if (!interaction.inGuild()) {
-    await interaction.reply('You must run this command in a server!');
+    await interaction.reply(`${emojiUtils.error} **Error:** This command must be ran within a server.`);
     return;
   }
   if ((await interaction.guild?.members.fetchMe()) == null) {
-    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    await interaction.reply(`${emojiUtils.error} **Error:** The bot is not inside of this server, and is unable to run the requested command. Please invite the bot and try again.`);
     return;
   }
 

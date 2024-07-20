@@ -7,18 +7,18 @@ import emojiUtils from '../../utils/emojiUtils.js';
   */
 export const main = async function(interaction: CommandInteraction) {
   if (!interaction.inGuild()) {
-    await interaction.reply('You must run this command in a server!');
+    await interaction.reply(`${emojiUtils.error} **Error:** This command must be ran within a server.`);
     return;
   }
 
   if ((await interaction.guild?.members.fetchMe()) == null) {
-    await interaction.reply('I need to have joined the server in which you are running the command in!');
+    await interaction.reply(`${emojiUtils.error} **Error:** The bot is not inside of this server, and is unable to run the requested command. Please invite the bot and try again.`);
     return;
   }
 
   // @ts-expect-error
   if (interaction.member?.permissions.has('Administrator') == false) {
-    await interaction.reply('Permission Declined');
+    await interaction.reply(`${emojiUtils.error} **Error:** You do not have permissions to run this command. Please contact someone with the Administrator permission.`);
     return;
   }
 
@@ -49,6 +49,6 @@ export const main = async function(interaction: CommandInteraction) {
         'setVerifiedNickname',
         boolean,
     );
-    await interaction.reply('🎉 Succesfully Binded Nickname to ' + boolean + '!');
+    await interaction.reply('${emojiUtils.checkmark} **Success!** The configuration for binded nickname has been set to ' + boolean + '.');
   }
 };
