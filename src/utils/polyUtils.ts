@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 /**
  * polyUtils
  *
@@ -16,19 +14,22 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromUsername(username: string): Promise<any> {
-    const response = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
-      validateStatus: () => true,
-    });
+    const response = await fetch(`https://api.polytoria.com/v1/users/find?username=${username}`);
 
-    // get id
-    const data = response.data;
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user info for username: ${username}`);
+    }
+
+    const data = await response.json();
     const id = data.id;
 
-    const idResponse = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
-      validateStatus: () => true,
-    });
+    const idResponse = await fetch(`https://api.polytoria.com/v1/users/${id}`);
 
-    const userData = idResponse.data;
+    if (!idResponse.ok) {
+      throw new Error(`Failed to fetch user info for ID: ${id}`);
+    }
+
+    const userData = await idResponse.json();
 
     return userData;
   }
@@ -42,11 +43,13 @@ export default class polyUtils {
    * @return {Promise<any>} User info
    */
   public static async getUserInfoFromID(id: number): Promise<any> {
-    const response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
-      validateStatus: () => true,
-    });
+    const response = await fetch(`https://api.polytoria.com/v1/users/${id}`);
 
-    const userData = response.data;
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user info for ID: ${id}`);
+    }
+
+    const userData = await response.json();
 
     return userData;
   }
